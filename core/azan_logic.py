@@ -22,7 +22,7 @@ class AzanReminder:
         for name, widget in prayers.items():
             self.target_times[name] = widget.time()
             self.triggered_flags[name] = False
-        self.status.setText("Reminders activated!")
+        self.status.setText("Timings activated!")
 
     def check_times(self):
         if not self.target_times:
@@ -43,15 +43,35 @@ class AzanReminder:
         self.action_initiated = True
         action = self.action_dropdown.currentText()
 
-        if action == "Shutdown on time":
+        if action == "Reminder with Shutdown":
             msg = QMessageBox()
+            # Apply a custom stylesheet to make the popup dark
+            msg.setStyleSheet("""
+                QMessageBox {
+                    background-color: #000000;
+                    color: #ffffff;
+                }
+                QMessageBox QLabel {
+                    color: #ffffff;
+                }
+                QMessageBox QPushButton {
+                    background-color: #0059b3;
+                    color: #ffffff;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 5px 15px;
+                }
+                QMessageBox QPushButton:hover {
+                    background-color: #00478f;
+                }
+            """)
             msg.setIcon(QMessageBox.Warning)
             msg.setWindowTitle("Time Alert")
             msg.setText("You are late! Shutting down in 30 seconds.")
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
             subprocess.run(["shutdown", "/s", "/t", "30"])
-        elif action == "Sleep on time":
+        elif action == "Reminder with Sleep":
             self.status.setText("Going to sleep...")
             os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
         else:
