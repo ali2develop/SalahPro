@@ -1,0 +1,5 @@
+PyQt5
+pygame      # (optional: for playing Azan MP3s)
+pytz                     # (optional: for timezone handling)
+playsound==1.2.2
+
